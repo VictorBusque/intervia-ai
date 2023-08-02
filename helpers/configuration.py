@@ -15,6 +15,6 @@ class ConfigurationHelper(object):
     @staticmethod
     def load_base_config():
         logging.info("Loading base configuration...")
-        with open("configuration/base.json", "r", encoding="utf8") as f:
+        with open(f"configuration/{os.getenv('ENV')}/base.json", "r", encoding="utf8") as f:
             base_config = jsonl(f)
         ConfigurationHelper.load_config(base_config)

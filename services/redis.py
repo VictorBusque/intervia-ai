@@ -20,7 +20,7 @@ class Redis(object):
 
     @staticmethod
     def get_configuration():
-        with open("configuration/redis.json", "r", encoding="utf8") as f:
+        with open(f"configuration/{getenv('ENV')}/redis.json", "r", encoding="utf8") as f:
             config = jsonl(f)
         envs = {
             "REDIS_URL": config["url"]

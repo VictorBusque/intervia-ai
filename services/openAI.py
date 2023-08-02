@@ -19,7 +19,7 @@ class OpenAI(object):
 
     @staticmethod
     def get_configuration():
-        with open("configuration/openai.json", "r", encoding="utf8") as f:
+        with open(f"configuration/{getenv('ENV')}/openai.json", "r", encoding="utf8") as f:
             config = jsonl(f)
         envs = {
             "OPENAI_KEY": config["credentials"]["key"],

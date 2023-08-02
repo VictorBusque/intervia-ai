@@ -8,21 +8,19 @@ from dotenv import load_dotenv
 from helpers.configuration import ConfigurationHelper
 from services.redis import Redis
 from services.openAI import OpenAI
-
 load_dotenv()
 
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("uvicorn")
 
-app = FastAPI(title=f"Intervia")
+app = FastAPI(title=f"Simujob")
 
 from routers import conversation
 
-
 @app.on_event("startup")
 async def startup():
-    logger.info("Starting Intervia")
+    logger.info("Starting Simujob")
     ConfigurationHelper.load_base_config()
     for service in [Redis, OpenAI]:
         config, envs = service.get_configuration()
