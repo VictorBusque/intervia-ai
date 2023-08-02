@@ -162,3 +162,5 @@ cython_debug/
 # Snips models
 configurations/*/models
 tmp
+
+configuration/local
