@@ -16,7 +16,7 @@ class GPTMessage(BaseModel):
     content: str
 
 
-from models.redis import RedisUserData, Context
+from models.redis import Context
 
 
 class Completion(BaseModel):

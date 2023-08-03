@@ -4,11 +4,13 @@ from pydantic import BaseModel
 
 from models.linkedin import JobPost
 from models.user import User
-from models.gpt import GPTMessage
 
 
 class Context(BaseModel):
     job_post: Optional[JobPost] = None
+
+
+from models.gpt import GPTMessage
 
 
 class RedisUserData(BaseModel):

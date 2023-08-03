@@ -5,7 +5,6 @@ from os import getenv
 
 from helpers.configuration import ConfigurationHelper
 from models.redis import RedisUserData
-from models.user import User
 
 
 class OpenAI(object):

@@ -1,16 +1,13 @@
 import logging
-from typing import Dict, Any, Union
+from typing import Any, Union
 
 import redis
 from os import getenv
 from json import load as jsonl
-from json import dumps as jsonds
 from json import loads as jsonls
 
 from helpers.configuration import ConfigurationHelper
-from models.gpt import Completion
-from models.redis import RedisUserData, Context
-from models.user import User
+from models.redis import RedisUserData
 
 
 class Redis(object):

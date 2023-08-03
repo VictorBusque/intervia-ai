@@ -120,6 +120,8 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+backend_api/.env
+telegram_bot/.env
 .env
 .venv
 env/
@@ -161,6 +163,6 @@ cython_debug/
 
 # Snips models
 configurations/*/models
-tmp
+backend_api/tmp
 
-configuration/local
+backend_api/configuration/local
