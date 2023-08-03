@@ -4,6 +4,7 @@ import openai
 from os import getenv
 
 from helpers.configuration import ConfigurationHelper
+from models.redis import RedisUserData
 from models.user import User
 
 
@@ -31,8 +32,10 @@ class OpenAI(object):
 
     def send_message(self,
                      user: str,
-                     user_state: User):
+                     user_state: RedisUserData):
         logging.info(f"Sending message to {user}: \"{user_state.conversation[-1].content}\"")
+
+
 
         completion = openai.ChatCompletion.create(
             model=self.model,

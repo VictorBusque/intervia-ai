@@ -1,10 +1,8 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel
-
-from models.gpt_completion import GPTMessage
 
 
 class User(BaseModel):
     id: str
-    conversation: List[GPTMessage]
+    email: Optional[str] = None
