@@ -2,9 +2,7 @@ version: "3.4"
 
 services:
   backend_api:
-    build:
-      dockerfile: Dockerfile
-      context: ./backend_api
+    build: backend_api
     depends_on:
       - redis
       - selenium
@@ -16,20 +14,31 @@ services:
       - "8000:8000"
 
   telegram_bot:
-    build:
-      dockerfile: Dockerfile
-      context: ./telegram_bot
+    build: telegram_bot
     depends_on:
       - backend_api
+      - stt
+      - tts
     environment:
       TELEGRAM_TOKEN: ""
       BACKEND_API_URL: "http://backend_api:8000"
+      STT_API_URL: "http://stt:9000"
+      TTS_API_URL: "http://tts:59125"
 
   selenium:
     image: selenium/standalone-chrome
     ports:
-    - 4444:4444
+      - "4444:4444"
 
+  stt:
+    image: onerahmet/openai-whisper-asr-webservice
+    ports:
+      - "9000:9000"
+
+  tts:
+    image: mycroftai/mimic3
+    ports:
+      - "59125:59125"
 
   redis:
     image: redis:latest
