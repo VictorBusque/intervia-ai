@@ -1,3 +1,6 @@
 .gitignore
 __pycache__
 backend_api/configuration/local
+.git
+.idea
+.vscode

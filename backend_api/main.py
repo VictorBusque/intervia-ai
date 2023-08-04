@@ -6,6 +6,7 @@ import logging
 from dotenv import load_dotenv
 
 from helpers.configuration import ConfigurationHelper
+from services.linkedin import LinkedIn
 from services.redis import Redis
 from services.openAI import OpenAI
 load_dotenv()
@@ -22,7 +23,7 @@ from routers import conversation
 async def startup():
     logger.info("Starting Simujob")
     ConfigurationHelper.load_base_config()
-    for service in [Redis, OpenAI]:
+    for service in [Redis, OpenAI, LinkedIn]:
         config, envs = service.get_configuration()
         ConfigurationHelper.load_config(envs)
 

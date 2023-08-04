@@ -8,17 +8,37 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from os import getenv
+from json import loads as jsonls
+
+from helpers.configuration import ConfigurationHelper
+
+
+def jsonl(f):
+    pass
 
 
 class LinkedIn(object):
+
+    @staticmethod
+    def get_configuration():
+        with open(f"configuration/{getenv('ENV')}/selenium.json", "r", encoding="utf8") as f:
+            config = jsonls(f.read())
+        envs = {
+            "SELENIUM_URL": config["url"]
+        }
+        return config, envs
+
     @staticmethod
     def extract_job_data(url):
         try:
-            service = Service(executable_path="tmp/chromedriver_linux64/chromedriver")
-            options = Options()
-            options.add_argument("--headless=new")
-            # Initialize the WebDriver (make sure you have the appropriate web driver installed)
-            driver = webdriver.Chrome(service=service, options=options)  # Replace "Chrome" with "Firefox", or other compatible web driver
+            selenium_url = f"{getenv('SELENIUM_URL')}/wd/hub"
+            chrome_options = webdriver.ChromeOptions()
+            driver = webdriver.Remote(
+                command_executor=selenium_url,
+                options=chrome_options
+            )
 
             # Open the URL in the WebDriver
             driver.get(url)
@@ -32,9 +52,11 @@ class LinkedIn(object):
             soup = BeautifulSoup(driver.page_source, "html.parser")
 
             # Extract relevant data from the job post
-            job_title = soup.find("h1", {"class": "top-card-layout__title font-sans text-lg papabear:text-xl font-bold leading-open text-color-text mb-0 topcard__title"}).text.strip()
+            job_title = soup.find("h1", {
+                "class": "top-card-layout__title font-sans text-lg papabear:text-xl font-bold leading-open text-color-text mb-0 topcard__title"}).text.strip()
             company_name = soup.find("a", {"class": "topcard__org-name-link topcard__flavor--black-link"}).text.strip()
-            job_description = soup.find("div", {"class": "show-more-less-html__markup relative overflow-hidden"}).text.strip()
+            job_description = soup.find("div",
+                                        {"class": "show-more-less-html__markup relative overflow-hidden"}).text.strip()
 
             # Create a dictionary to store the extracted data
             job_data = {
@@ -53,7 +75,6 @@ class LinkedIn(object):
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
-
 
 
 if __name__ == "__main__":

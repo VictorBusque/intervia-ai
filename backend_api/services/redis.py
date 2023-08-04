@@ -23,7 +23,6 @@ class Redis(object):
         envs = {
             "REDIS_URL": config["url"]
         }
-        ConfigurationHelper.load_config(envs)
         return config, envs
 
     def set(self, key: str, value: Any) -> None:

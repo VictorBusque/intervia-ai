@@ -26,7 +26,6 @@ class OpenAI(object):
             "OPENAI_ORG": config["credentials"]["org"],
             "OPENAI_MODEL": config["model"]["name"]
         }
-        ConfigurationHelper.load_config(envs)
         return config, envs
 
     def send_message(self,

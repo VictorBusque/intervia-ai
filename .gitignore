@@ -166,3 +166,5 @@ configurations/*/models
 backend_api/tmp
 
 backend_api/configuration/local
+
+secrets
