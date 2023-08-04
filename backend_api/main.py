@@ -12,7 +12,7 @@ from services.openAI import OpenAI
 load_dotenv()
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("uvicorn")
 
 app = FastAPI(title=f"Simujob")

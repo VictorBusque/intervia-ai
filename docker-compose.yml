@@ -2,12 +2,12 @@ version: "3.4"
 
 services:
   backend_api:
-    depends_on:
-      - redis
-      - selenium
     build:
       dockerfile: Dockerfile
       context: ./backend_api
+    depends_on:
+      - redis
+      - selenium
     environment:
       ENV: "docker"
       PORT: "8000"
@@ -16,11 +16,11 @@ services:
       - "8000:8000"
 
   telegram_bot:
-    depends_on:
-      - backend_api
     build:
       dockerfile: Dockerfile
       context: ./telegram_bot
+    depends_on:
+      - backend_api
     environment:
       TELEGRAM_TOKEN: ""
       BACKEND_API_URL: "http://backend_api:8000"
