@@ -26,17 +26,20 @@ class Redis(object):
         return config, envs
 
     def set(self, key: str, value: Any) -> None:
-        self.logger.debug(f"Setting {key} to {value}")
+        self.logger.debug(f"Setting user data for {key} to {value}")
         self.engine.set(key, value=value)
 
     def get(self, key: str) -> Union[RedisUserData, None]:
-        self.logger.debug(f"Getting {key}")
+        self.logger.debug(f"Getting user data for {key}")
         user_data = self.engine.get(key)
         if user_data:
+            self.logger.debug(f"Found user data for {key}")
             return RedisUserData(**jsonls(user_data))
-        else: return None
+        else: 
+            self.logger.warning(f"No user data found for: {key}")
+            return None
 
 
     def delete(self, key: str) -> None:
-        self.logger.debug(f"Deleting {key}")
+        self.logger.debug(f"Deleting user data for: {key}")
         self.engine.delete(key)

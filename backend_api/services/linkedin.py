@@ -17,10 +17,6 @@ from json import loads as jsonls
 from helpers.configuration import ConfigurationHelper
 
 
-def jsonl(f):
-    pass
-
-
 class LinkedIn(object):
 
     @staticmethod
@@ -35,15 +31,17 @@ class LinkedIn(object):
     @staticmethod
     def extract_job_data(url):
         try:
+            logging.info(f"Using Selenium browser driver to access: {url}")
             selenium_url = f"{getenv('SELENIUM_URL')}/wd/hub"
             chrome_options = webdriver.ChromeOptions()
             driver = webdriver.Remote(
                 command_executor=selenium_url,
                 options=chrome_options
             )
-
+            logging.debug("Selenium driver connected.")
             # Open the URL in the WebDriver
             driver.get(url)
+            logging.debug("Url accessed")
             # Wait for the "view more" button to appear and click it
             view_more_button = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "button.show-more-less-button"))
@@ -80,6 +78,8 @@ class LinkedIn(object):
 
 
 if __name__ == "__main__":
+    _, envs = LinkedIn.get_configuration()
+    ConfigurationHelper.load_config(envs)
     job_url = "https://www.linkedin.com/jobs/view/3679344643/"
     li = LinkedIn()
     job_post = li.extract_job_data(job_url)

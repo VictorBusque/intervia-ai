@@ -6,3 +6,7 @@ from pydantic import BaseModel
 class ConversationResponse(BaseModel):
     response: GPTMessage
     job_post: JobPost
+    
+    
+class STTResponse(BaseModel):
+    text: str

@@ -6,6 +6,8 @@ services:
     depends_on:
       - redis
       - selenium
+      - stt
+      - tts
     environment:
       ENV: "docker"
       PORT: "8000"
@@ -17,8 +19,6 @@ services:
     build: telegram_bot
     depends_on:
       - backend_api
-      - stt
-      - tts
     environment:
       TELEGRAM_TOKEN: ""
       BACKEND_API_URL: "http://backend_api:8000"

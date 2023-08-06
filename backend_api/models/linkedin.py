@@ -13,4 +13,8 @@ class JobPost(BaseModel):
     @classmethod
     def from_url(cls, url: str) -> "JobPost":
         jobdata = LinkedIn.extract_job_data(url)
-        return cls(**jobdata)
+        if jobdata:
+            return cls(**jobdata)
+        else:
+            logging.error("Could not connect and get description from LinkedIn URL.")
+            return None

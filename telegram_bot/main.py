@@ -15,14 +15,7 @@ logger = logging.getLogger(__name__)
 
 def stt(file: File) -> str:
     file_binary = file.download_as_bytearray()
-
-    params = {
-        "task": "transcribe",
-        "language": "en",
-        "encode": True,
-        "output": "json"
-    }
-    response = requests.post(f"{getenv('STT_API_URL')}/asr", params=params, files={"audio_file": file_binary})
+    response = requests.post(f"{getenv('BACKEND_API_URL')}/speech/stt", files={"audio_file": file_binary})
     response.raise_for_status()
     voice_note = response.json()
     voice_note_text = voice_note.get("text")
@@ -31,7 +24,7 @@ def stt(file: File) -> str:
 
 def tts(text: str) -> bytes:
     text = text.replace("Score", "")
-    url = f"{getenv('TTS_API_URL')}/api/tts?text={text}&lengthScale=0.7"
+    url = f"{getenv('BACKEND_API_URL')}/speech/tts?text={text}"
     response = requests.get(url)
     response.raise_for_status()
     file = bytes(response.content)

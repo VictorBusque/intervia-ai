@@ -39,10 +39,17 @@ def post_message(user_id: str = Path(...),
 
     elif job_post_url and not user_state:
         user = User(id=user_id, email=None)
-        context = Context(job_post=JobPost.from_url(job_post_url))
-        conversation = Completion.get_base_completion(context).messages
-        user_state = RedisUserData(user=user, conversation=conversation, context=context)
-        redis_service.set(user_id, jsonds(user_state.model_dump(mode="json")))
+        job_post = JobPost.from_url(job_post_url)
+        if job_post:
+            context = Context(job_post=JobPost.from_url(job_post_url))
+            conversation = Completion.get_base_completion(context).messages
+            user_state = RedisUserData(user=user, conversation=conversation, context=context)
+            redis_service.set(user_id, jsonds(user_state.model_dump(mode="json")))
+        else:
+            return ConversationResponse(**{
+            "response": GPTMessage(role=Role.assistant, content="I could not load the LinkedIn job post. Try again later or with another job post."),
+            "job_post": None
+        })
 
     if user_state.context.job_post:
         if not job_post_url:
