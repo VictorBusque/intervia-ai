@@ -29,16 +29,26 @@ class LinkedIn(object):
         return config, envs
 
     @staticmethod
-    def extract_job_data(url):
+    def extract_job_data(url: str, tries: int = 3):
         try:
             logging.info(f"Using Selenium browser driver to access: {url}")
             selenium_url = f"{getenv('SELENIUM_URL')}/wd/hub"
             chrome_options = webdriver.ChromeOptions()
             driver = webdriver.Remote(
                 command_executor=selenium_url,
+                keep_alive=False,
                 options=chrome_options
             )
             logging.debug("Selenium driver connected.")
+        except Exception as e:
+            logging.error(f"An error occurred: {e}")
+            if tries > 0:
+                driver.quit()
+                return LinkedIn.extract_job_data(url, tries - 1)
+            else:
+                return None
+
+        try:
             # Open the URL in the WebDriver
             driver.get(url)
             logging.debug("Url accessed")
@@ -71,10 +81,18 @@ class LinkedIn(object):
 
         except NoSuchElementException as e:
             logging.error("Error occurred while locating the element.")
-            return None
+            if tries > 0:
+                driver.quit()
+                return LinkedIn.extract_job_data(url, tries - 1)
+            else:
+                return None
         except Exception as e:
             logging.error(f"An error occurred: {e}")
-            return None
+            if tries > 0:
+                driver.quit()
+                return LinkedIn.extract_job_data(url, tries - 1)
+            else:
+                return None
 
 
 if __name__ == "__main__":
